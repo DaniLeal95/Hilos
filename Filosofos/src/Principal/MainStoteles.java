@@ -1,6 +1,9 @@
 package Principal;
 
 import java.util.Scanner;
+import java.util.concurrent.Semaphore;
+
+import model.Filosofo;
 
 public class MainStoteles {
 
@@ -11,10 +14,11 @@ public class MainStoteles {
 		System.out.println("Cuantos filosofos hay?");
 		int filosofos = Integer.parseInt(sc.nextLine());
 		
-		int[][] filosofospalillos=new int[filosofos][1];
+		int[][] filosofospalillos=new int[filosofos][2];
+		Semaphore[] palillos_semaforo = new Semaphore[filosofos];
 		
 		for(int i=0;i<filosofos;i++){
-			
+			palillos_semaforo[i]= new Semaphore(1);
 				if(i==0){
 					filosofospalillos[i][0]= filosofos-1;
 					filosofospalillos[i][1]= i;
@@ -25,6 +29,16 @@ public class MainStoteles {
 				}
 				
 		}
+		
+		for (int i = 0; i < filosofos; i++) {
+			
+            new Filosofo(i, palillos_semaforo, filosofospalillos).start();
+            
+        }
+		
+		
+		
+		
 				
 	}
 
