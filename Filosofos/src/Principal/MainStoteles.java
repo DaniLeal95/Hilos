@@ -15,6 +15,7 @@ public class MainStoteles {
 		int filosofos = Integer.parseInt(sc.nextLine());
 		
 		int[][] filosofospalillos=new int[filosofos][2];
+		
 		Semaphore[] palillos_semaforo = new Semaphore[filosofos];
 		
 		for(int i=0;i<filosofos;i++){

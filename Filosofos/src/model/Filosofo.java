@@ -9,26 +9,26 @@ public class Filosofo extends Thread{
     private final int idFilosofo;
  
     /**
-     * Array de semáforos. Cada semáfaro es un palillo.
+     * Array de semÃ¡foros. Cada semÃ¡faro es un palillo.
      */
     private final Semaphore[] palillos_semaforo;
  
     /**
-     * Array de enteros 2 dimensiones. Por cada valor de su primer índice
-     * (filas) almacena los palillos que necesita el filósofo de ese índice para
+     * Array de enteros 2 dimensiones. Por cada valor de su primer Ã­ndice
+     * (filas) almacena los palillos que necesita el filÃ³sofo de ese Ã­ndice para
      * comer.
      */
     private final int[][] palillosFilosofo;
  
     /**
-     * El índice del palillo a la izquierda del filósofo. Se obtiene en el
-     * constructor a partir del array de enteros palillosFilósofo.
+     * El Ã­ndice del palillo a la izquierda del filÃ³sofo. Se obtiene en el
+     * constructor a partir del array de enteros palillosFilÃ³sofo.
      */
     private final int palilloIzquierdo;
  
     /**
-     * El índice del palillo a la derecha del filósofo. Se obtiene en el
-     * constructor a partir del array de enteros palillosFilósofo.
+     * El Ã­ndice del palillo a la derecha del filÃ³sofo. Se obtiene en el
+     * constructor a partir del array de enteros palillosFilÃ³sofo.
      */
     private final int palilloDerecho;
     
@@ -47,9 +47,9 @@ public class Filosofo extends Thread{
 		 
 		 //Si hay permisos empieza a comer y coge los dos permisos
 		 if(intentacogerPalillos()){
-	     System.out.println("FILÓSOFO " + idFilosofo + " ESTÁ COMIENDO.");
+			 System.out.println("filósofo " + idFilosofo + " está comiendo.");
 	     try {
-	      //Simular el tiempo que tarda el filósofo en comer,
+	      //Simular el tiempo que tarda el filÃ³sofo en comer,
 	      // entre 0.5 y 1 segundos:
 	                    sleep(tiempoAleatorio.nextInt(1000) + 500);
 	                } catch (InterruptedException ex) {
@@ -57,10 +57,10 @@ public class Filosofo extends Thread{
 	                }
 	                System.out.println("Filósofo " + idFilosofo + " ha terminado de comer.Libera los palillos " + palilloIzquierdo + " y " + palilloDerecho);
 	            
-	                // Ya que ha terminado de comer libera el semáforo-palillo de su derecha:
+	                // Ya que ha terminado de comer libera el semÃ¡foro-palillo de su derecha:
 	            palillos_semaforo[palilloDerecho].release();
 	            
-	            // Y libera también el semáforo palillo de su izuierda.
+	            // Y libera tambiÃ©n el semÃ¡foro palillo de su izuierda.
 	            palillos_semaforo[palilloIzquierdo].release();
 	        
 		 	}
@@ -70,13 +70,13 @@ public class Filosofo extends Thread{
 	 	}
 	 
 	    /**
-	     * Imprimir un mensaje "Filósofo n está pensando". Para simular esta
-	     * actividad, dormirá el hilo un tiempo aleatorio.
+	     * Imprimir un mensaje "FilÃ³sofo n estÃ¡ pensando". Para simular esta
+	     * actividad, dormirÃ¡ el hilo un tiempo aleatorio.
 	     */
 	    protected void pensar() {
 	        System.out.println("Filósofo " + idFilosofo + " está pensando.");
 	        try {
-	            //void El tiempo que tarda el filósofo en pensar, entre 100 y 1000 milisegundos:
+	            //void El tiempo que tarda el filÃ³sofo en pensar, entre 100 y 1000 milisegundos:
 	            Filosofo.sleep(tiempoAleatorio.nextInt(5000) + 100);
 	        } catch (InterruptedException ex) {
 	            System.out.println("Error en el método pensar(): " + ex.toString());
@@ -97,9 +97,15 @@ public class Filosofo extends Thread{
 	public boolean intentacogerPalillos(){
 		boolean pallilloscogidos=false;
 		
-		if(palillos_semaforo[palilloIzquierdo].tryAcquire() && palillos_semaforo[palilloDerecho].tryAcquire()){
-			pallilloscogidos=true;
+		if(palillos_semaforo[palilloIzquierdo].tryAcquire()){
+			if( palillos_semaforo[palilloDerecho].tryAcquire()){
+				pallilloscogidos=true;
+			}else{
+				palillos_semaforo[palilloIzquierdo].release();
+			}
+			
 		}
+		
 		return pallilloscogidos;
 			
 		
